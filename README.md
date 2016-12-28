@@ -48,9 +48,9 @@ $ sudo chmod 666 /var/log/leaf-python-mqtt/leaf-python-mqtt.log
 
 ### Create Systemd service 
 
-Create systemd symlink, assuming repo was cloned to `/home/pi` folder on a RaspberryPi, adjust paths if needed
+Create systemd service, assuming repo was cloned to `/home/pi` folder on a RaspberryPi, adjust paths if needed
 
-`$ sudo ln -s /home/pi/leaf-python-mqtt/leaf-python-mqtt.service /lib/systemd/system/leaf-python-mqtt.service`
+`$ sudo cp /home/pi/leaf-python-mqtt/leaf-python-mqtt.service /lib/systemd/system/leaf-python-mqtt.service`
 
 Set permissions: 
 
