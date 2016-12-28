@@ -50,7 +50,7 @@ $ sudo chmod 666 /var/log/leaf-python-mqtt/leaf-python-mqtt.log
 
 Create systemd service, assuming repo was cloned to `/home/pi` folder on a RaspberryPi, adjust paths if needed
 
-`$ sudo cp /home/pi/leaf-python-mqtt/leaf-python-mqtt.service /lib/systemd/system/leaf-python-mqtt.service`
+`$ sudo cp leaf-python-mqtt.service /lib/systemd/system/leaf-python-mqtt.service`
 
 Set permissions: 
 
@@ -66,6 +66,10 @@ Reboot the Pi
 
 `$ sudo reboot`
 
-Check status with:
+Check service status with:
 
 `sudo systemctl status leaf-python-mqtt.service`
+
+Check log file with:
+
+`$ tail /var/log/leaf-python-mqtt/leaf-python-mqtt.log`   
