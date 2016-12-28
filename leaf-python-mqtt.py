@@ -111,8 +111,11 @@ def get_leaf_status():
     client.publish(mqtt_status_topic + "/connected", leaf_info.is_connected)
 
 
+# Run on first time
+get_leaf_status()
 
-schedule.every(1).minutes.do(get_leaf_status)
+# Then schedule
+schedule.every(30).minutes.do(get_leaf_status)
 
 while True:
     schedule.run_pending()
