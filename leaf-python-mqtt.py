@@ -9,22 +9,34 @@ import pprint
 import paho.mqtt.client as mqtt
 import schedule
 from datetime import datetime
+import os
+
+config_file = 'config.ini'
+
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-logging.info("Startup leaf status " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+logging.info("Startup leaf-python-MQTT: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+config_file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), config_file)
 
 # Get login details from 'config.ini'
 parser = SafeConfigParser()
-candidates = [ 'config.ini', 'my_config.ini' ]
-found = parser.read(candidates)
-username = parser.get('get-leaf-info', 'username')
-password = parser.get('get-leaf-info', 'password')
-mqtt_host = parser.get('get-leaf-info', 'mqtt_host')
-mqtt_port = parser.get('get-leaf-info', 'mqtt_port')
-mqtt_username = parser.get('get-leaf-info', 'mqtt_username')
-mqtt_password = parser.get('get-leaf-info', 'mqtt_password')
-mqtt_control_topic = parser.get('get-leaf-info', 'mqtt_control_topic')
-mqtt_status_topic =  parser.get('get-leaf-info', 'mqtt_status_topic')
+if os.path.exists(config_file_path):
+  logging.info("Loaded config file " + config_file_path)
+  #candidates = [ 'config.ini', 'my_config.ini' ]
+  candidates = config_file_path
+  found = parser.read(candidates)
+  username = parser.get('get-leaf-info', 'username')
+  password = parser.get('get-leaf-info', 'password')
+  mqtt_host = parser.get('get-leaf-info', 'mqtt_host')
+  mqtt_port = parser.get('get-leaf-info', 'mqtt_port')
+  mqtt_username = parser.get('get-leaf-info', 'mqtt_username')
+  mqtt_password = parser.get('get-leaf-info', 'mqtt_password')
+  mqtt_control_topic = parser.get('get-leaf-info', 'mqtt_control_topic')
+  mqtt_status_topic =  parser.get('get-leaf-info', 'mqtt_status_topic')
+else:
+  logging.error("ERROR: Config file not found " + config_file_path)
+  quit()
+  
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -90,7 +102,13 @@ def get_leaf_status():
   time.sleep(1)
   client.publish(mqtt_status_topic + "/charging_status", leaf_info.charging_status)
   time.sleep(1)
-  client.publish(mqtt_status_topic + "/connected", leaf_info.is_connected)
+  
+  if leaf_info.is_connected == True:
+    client.publish(mqtt_status_topic + "/connected", "Yes")
+  elif leaf_info.is_connected == False:
+    client.publish(mqtt_status_topic + "/connected", "No")
+  else:
+    client.publish(mqtt_status_topic + "/connected", leaf_info.is_connected)
 
 
 

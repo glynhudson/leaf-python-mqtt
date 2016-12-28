@@ -4,7 +4,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python /home/pi/leaf-python-mqtt/leaf-python-mqtt.py > /home/pi/leaf-python-mqtt/leaf-python-mqtt.log 2>&1
+ExecStart=/usr/bin/python /home/pi/leaf-python-mqtt/leaf-python-mqtt.py > /var/log/leaf-python-mqtt/leaf-python-mqtt.log 2>&1
 
 [Install]
 WantedBy=multi-user.target
