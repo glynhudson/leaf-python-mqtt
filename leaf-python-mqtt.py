@@ -85,6 +85,9 @@ client.on_message = on_message
 client.username_pw_set(mqtt_username, mqtt_password);
 client.connect(mqtt_host, mqtt_port, 60)
 client.publish(mqtt_status_topic, "Connecting to MQTT host " + mqtt_host);
+# Non-blocking MQTT subscription loop
+client.loop_start()
+
 
 
 
@@ -140,7 +143,11 @@ def get_leaf_status():
   s = pycarwings2.Session(username, password , "NE")
   logging.info("Login...")
   logging.info("Start update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-  l = s.get_leaf()
+  
+  try:
+    l = s.get_leaf()
+  except:
+    logging.error("CarWings API error")
   
   logging.info("get_latest_battery_status")
   
@@ -197,6 +204,3 @@ schedule.every(int(GET_UPDATE_INTERVAL)).minutes.do(get_leaf_status)
 while True:
     schedule.run_pending()
     time.sleep(1)
-    
-    # MQTT loop
-    #client.loop_forever()
