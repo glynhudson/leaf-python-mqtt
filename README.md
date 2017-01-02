@@ -19,7 +19,7 @@ See [pycarwings2 repo](https://github.com/cedric222/pycarwings2) for more info
 *pip may require `sudo`*
 
 
-## Install Script 
+## Install Script
 
 Clone this repo:
 
@@ -46,30 +46,39 @@ $ sudo touch /var/log/leaf-python-mqtt/leaf-python-mqtt.log
 $ sudo chmod 666 /var/log/leaf-python-mqtt/leaf-python-mqtt.log
 ```
 
-### Create Systemd service 
+### Create Systemd service
 
 Create systemd service, assuming repo was cloned to `/home/pi` folder on a RaspberryPi, adjust paths if needed
 
 `$ sudo cp leaf-python-mqtt.service /lib/systemd/system/leaf-python-mqtt.service`
 
-Set permissions: 
+Set permissions:
 
 `sudo chmod 644  /lib/systemd/system/leaf-python-mqtt.service`
 
-Reload systemd then enable the service:
+Reload systemd then enable the service at startup:
 
 ```
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable leaf-python-mqtt.service
 ```
+
 Reboot the Pi
 
 `$ sudo reboot`
 
-Check service status with:
+Check service status and view log snippet with:
 
 `sudo systemctl status leaf-python-mqtt.service`
 
+Start, stop and restart with:
+
+```
+sudo systemctl start leaf-python-mqtt.service
+sudo systemctl stop leaf-python-mqtt.service
+sudo systemctl restart leaf-python-mqtt.service
+
+
 Check log file with:
 
-`$ tail /var/log/leaf-python-mqtt/leaf-python-mqtt.log`   
+`$ tail /var/log/leaf-python-mqtt/leaf-python-mqtt.log`

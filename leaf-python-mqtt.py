@@ -35,6 +35,7 @@ if os.path.exists(config_file_path):
   mqtt_control_topic = parser.get('get-leaf-info', 'mqtt_control_topic')
   mqtt_status_topic =  parser.get('get-leaf-info', 'mqtt_status_topic')
   GET_UPDATE_INTERVAL = parser.get('get-leaf-info', 'api_update_interval_min')
+  logging.info("updating data from API every " + GET_UPDATE_INTERVAL +"min")
 else:
   logging.error("ERROR: Config file not found " + config_file_path)
   quit()
@@ -42,9 +43,10 @@ else:
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
-  logging.info("Connected to MQTT with result code "+str(rc))
-  logging.info("suscribing to leaf control topic: " + mqtt_control_topic)
+  logging.info("Connected to MQTT host " + mqtt_host + " with result code "+str(rc))
+  logging.info("Suscribing to leaf control topic: " + mqtt_control_topic)
   client.subscribe(mqtt_control_topic + "/#")
+  logging.info("Publishing to leaf status topic: " + mqtt_status_topic)
   client.publish(mqtt_status_topic, "MQTT connected");
 
 # The callback for when a PUBLISH message is received from the server.
@@ -82,7 +84,7 @@ client.on_message = on_message
 # Connect to MQTT
 client.username_pw_set(mqtt_username, mqtt_password);
 client.connect(mqtt_host, mqtt_port, 60)
-client.publish(mqtt_status_topic, "Connecting to MQTT...");
+client.publish(mqtt_status_topic, "Connecting to MQTT host " + mqtt_host);
 
 
 
@@ -133,11 +135,11 @@ def get_leaf_update():
 
   
 def get_leaf_status():
-  logging.debug("login = %s , password = %s" % ( username , password)  )
+  logging.debug("login = %s , password = %s" % ( username , password) )
   logging.info("Prepare Session")
   s = pycarwings2.Session(username, password , "NE")
   logging.info("Login...")
-  logging.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+  logging.info("Start update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
   l = s.get_leaf()
   
   logging.info("get_latest_battery_status")
@@ -180,14 +182,16 @@ def get_leaf_status():
     client.publish(mqtt_status_topic + "/connected", "No")
   else:
     client.publish(mqtt_status_topic + "/connected", leaf_info.is_connected)
+  logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
 
 
 # Run on first time
 get_leaf_status()
 
 # Then schedule
-logging.info("Schedule leaf update every " + GET_UPDATE_INTERVAL + "min")
-schedule.every(GET_UPDATE_INTERVAL).minutes.do(get_leaf_status)
+logging.info("Schedule API update every " + GET_UPDATE_INTERVAL + "min")
+schedule.every(int(GET_UPDATE_INTERVAL)).minutes.do(get_leaf_status)
 
 while True:
     schedule.run_pending()
