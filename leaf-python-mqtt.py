@@ -183,6 +183,7 @@ def get_leaf_status():
   else:
     client.publish(mqtt_status_topic + "/connected", leaf_info.is_connected)
   logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+  logging.info("Schedule API update every " + GET_UPDATE_INTERVAL + "min")
 
 
 

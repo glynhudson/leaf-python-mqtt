@@ -38,14 +38,6 @@ Test script by running
 
 ## Run script as system service
 
-### Create logfile
-
-```
-$ sudo mkdir /var/log/leaf-python-mqtt
-$ sudo touch /var/log/leaf-python-mqtt/leaf-python-mqtt.log
-$ sudo chmod 666 /var/log/leaf-python-mqtt/leaf-python-mqtt.log
-```
-
 ### Create Systemd service
 
 Create systemd service, assuming repo was cloned to `/home/pi` folder on a RaspberryPi, adjust paths if needed
@@ -63,13 +55,13 @@ $ sudo systemctl daemon-reload
 $ sudo systemctl enable leaf-python-mqtt.service
 ```
 
-Reboot the Pi
-
-`$ sudo reboot`
-
 Check service status and view log snippet with:
 
 `sudo systemctl status leaf-python-mqtt.service`
+
+To view more lines of logs add `nXX` where XX is the number of lines e.g. to view 50 lines of logs
+
+`sudo systemctl status leaf-python-mqtt.service -n50`
 
 Start, stop and restart with:
 
@@ -77,8 +69,4 @@ Start, stop and restart with:
 sudo systemctl start leaf-python-mqtt.service
 sudo systemctl stop leaf-python-mqtt.service
 sudo systemctl restart leaf-python-mqtt.service
-
-
-Check log file with:
-
-`$ tail /var/log/leaf-python-mqtt/leaf-python-mqtt.log`
+```
