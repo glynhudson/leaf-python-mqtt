@@ -75,7 +75,7 @@ Test script by running
 
 Create systemd service, assuming repo was cloned to `/home/pi` folder on a RaspberryPi, adjust paths if needed
 
-`$ sudo cp leaf-python-mqtt.service /etc/systemd/system/`
+`$ sudo ln -s /home/pi/leaf-python-mqtt/leaf-python-mqtt.service /etc/systemd/system/leaf-python-mqtt.service`
 
 Set permissions:
 
