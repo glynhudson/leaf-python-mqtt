@@ -74,6 +74,7 @@ def on_message(client, userdata, msg):
       logging.info('Update control command received: ' + control_message)
       if control_message == '1':
         get_leaf_update()
+        time.sleep(30)
         get_leaf_status()
         
 client = mqtt.Client()
@@ -102,18 +103,16 @@ def climate_control(climate_control_instruction):
   if climate_control_instruction == 1:
     logging.info("Turning on climate control..wait 60s")
     result_key = l.start_climate_control()
-    time.sleep(60)
+    # time.sleep(60)
     #start_cc_result = l.get_start_climate_control_result(result_key)
     #logging.info(start_cc_result)
-    logging.info("climate turned on, unable to get statuts")
-  
+
   if climate_control_instruction == 0:
     logging.info("Turning off climate control..wait 60s")
     result_key = l.stop_climate_control()
-    time.sleep(60)
+    # time.sleep(60)
     #stop_cc_result = l.get_stop_climate_control_result(result_key)
     #logging.info(stop_cc_result)
-    logging.info("climate turned off, unable to get statuts")
 
   
 
@@ -123,9 +122,15 @@ def get_leaf_update():
   s = pycarwings2.Session(username, password , "NE")
   logging.info("Login...")
   logging.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-  l = s.get_leaf()
+  try:
+    l = s.get_leaf()
+  except:
+    logging.error("CarWings API error")
   logging.info("Requesting update from car..wait 30s")
-  result_key = l.request_update()
+  try:
+    result_key = l.request_update()
+  except:
+    logging.error("ERROR: no responce from car update")
   time.sleep(30)
   battery_status = l.get_status_from_update(result_key)
   
