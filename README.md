@@ -29,7 +29,7 @@ By default the following control MQTT topics are used
 
 Publishing `1` to the update control sub-topic will request and update from the car.
 
-**Caution: this will activate the cars GSM telematic modem. Frequent poilling is not recomended as it could drain the cars 12V aux batttery **
+**Caution: this will activate the cars GSM telematic modem. Frequent poilling is not recomended as it could drain the cars 12V aux batttery**
 
 `leaf/control/climate`
 
