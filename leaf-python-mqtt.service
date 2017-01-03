@@ -5,6 +5,8 @@ After=multi-user.target
 [Service]
 Type=idle
 ExecStart=/usr/bin/python /home/pi/leaf-python-mqtt/leaf-python-mqtt.py
+Restart=always
+RestartSec=60
 
 [Install]
 WantedBy=multi-user.target
