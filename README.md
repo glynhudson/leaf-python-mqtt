@@ -1,6 +1,10 @@
 # leaf-python-mqtt
 
-Hacked together script to extract data from Nissan Leaf API using [pycarwings2](https://github.com/cedric222/pycarwings2) and post to MQTT. Once data is in MQTT is can easily be used to inform home automation and smart charging applications. e.g OpenHAB, Home Assistant, OpenEVSE.
+Hacked together script to extract data from Nissan Leaf API using [pycarwings2](https://github.com/cedric222/pycarwings2) and post to MQTT. Once data is in MQTT it can easily be used to inform home automation and smart charging applications. e.g OpenHAB, Home Assistant, OpenEVSE.
+
+Here is an example of displaying the MQTT data via openHAB Android app:
+
+![openhab-leaf-mqtt](openhab-leaf-mqtt.png)
 
 ## Usage
 
@@ -20,7 +24,7 @@ These scheduled 'status' updates are polled from the Nissan API and not requeste
 
 **It's not recommended to poll the Nissan API more fequently then about 10-15min, be a good citizen :-)**
 
-## Control
+### Control
 
 By default the following control MQTT topics are used
 
@@ -34,6 +38,8 @@ Publishing `1` to the update control sub-topic will request and update from the 
 `leaf/control/climate`
 
 Publishing `1` to the `climate` control sub-topic will turn on the cars climate control. Publishing `0` will turn it off. *Currently there does not seem to be anyway to retrieve the status of the climate control from the pycarwings2 lib*
+
+***
 
 ## Install Requirements
 
@@ -86,6 +92,7 @@ Reload systemd then enable the service at startup:
 ```
 $ sudo systemctl daemon-reload
 $ sudo systemctl enable leaf-python-mqtt.service
+$ sudo systemctl start leaf-python-mqtt.service
 ```
 
 Check service status and view log snippet with:
