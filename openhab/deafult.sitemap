@@ -1,0 +1,11 @@
+Frame label="Car"{
+            Text label="Nissan LEAF" icon="garage" {
+                Text item=emonpi_ct2 icon="garage"
+                Text item=leaf_last_updated         icon="shield"
+                Text item=leaf_battery_percentage   icon="shield"
+                Text item=leaf_connected            icon="shield"
+                Text item=leaf_charging_status      icon="shield"
+                Switch item=leaf_heating  label="Climate Control"          mappings=[OFF="Off", ON="On"] icon="fire"
+                Switch item=leaf_update  label="Request Update"        mappings=[OFF="Off", ON="On"] icon="settings"
+            }
+}

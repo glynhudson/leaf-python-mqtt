@@ -34,6 +34,7 @@ if os.path.exists(config_file_path):
   mqtt_password = parser.get('get-leaf-info', 'mqtt_password')
   mqtt_control_topic = parser.get('get-leaf-info', 'mqtt_control_topic')
   mqtt_status_topic =  parser.get('get-leaf-info', 'mqtt_status_topic')
+  nissan_region_code = parser.get('get-leaf-info', 'nissan_region_code')
   GET_UPDATE_INTERVAL = parser.get('get-leaf-info', 'api_update_interval_min')
   logging.info("updating data from API every " + GET_UPDATE_INTERVAL +"min")
 else:
@@ -103,16 +104,16 @@ def climate_control(climate_control_instruction):
   if climate_control_instruction == 1:
     logging.info("Turning on climate control..wait 60s")
     result_key = l.start_climate_control()
-    # time.sleep(60)
-    #start_cc_result = l.get_start_climate_control_result(result_key)
-    #logging.info(start_cc_result)
+    time.sleep(60)
+    start_cc_result = l.get_start_climate_control_result(result_key)
+    logging.info(start_cc_result)
 
   if climate_control_instruction == 0:
     logging.info("Turning off climate control..wait 60s")
     result_key = l.stop_climate_control()
-    # time.sleep(60)
-    #stop_cc_result = l.get_stop_climate_control_result(result_key)
-    #logging.info(stop_cc_result)
+    time.sleep(60)
+    stop_cc_result = l.get_stop_climate_control_result(result_key)
+    logging.info(stop_cc_result)
 
   
 
@@ -145,7 +146,7 @@ def get_leaf_update():
 def get_leaf_status():
   logging.debug("login = %s , password = %s" % ( username , password) )
   logging.info("Prepare Session")
-  s = pycarwings2.Session(username, password , "NE")
+  s = pycarwings2.Session(username, password , nissan_region_code)
   logging.info("Login...")
   logging.info("Start update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
   

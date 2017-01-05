@@ -1,0 +1,10 @@
+/* LEAF */
+
+String leaf_last_updated            "Last Updated [%s]"    { mqtt="<[mosquitto:leaf/status/last_updated:state:default]" }
+Number leaf_battery_percentage      "Battery [%.0f %%]"    { mqtt="<[mosquitto:leaf/status/battery_percent:state:default]" }
+String leaf_connected               "Connected? [%s]"  { mqtt="<[mosquitto:leaf/status/connected:state:default]" }
+String leaf_charging_status         "Charging? [%s]"   { mqtt="<[mosquitto:leaf/status/charging_status:state:default]" }
+
+
+Switch leaf_update  "Get Car Update" {mqtt=">[mosquitto:leaf/control/update:command:ON:1],>[mosquitto:leaf/control/update:command:OFF:0]"}
+Switch leaf_heating "Heating"        {mqtt=">[mosquitto:leaf/control/climate:command:ON:1],>[mosquitto:leaf/control/climate:command:OFF:0]}"
