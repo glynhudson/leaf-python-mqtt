@@ -71,6 +71,17 @@ $ cd leaf-python-mqtt
 $ cp default.config.ini config.ini
 $ nano config.ini
 ```
+
+The default config is setup for Nissan Leaf cars in Europe with region code `NE`, change the region code to one of the following if you are in a different region:  
+
+```
+NNA : USA
+NE : Europe
+NCI : Canada
+NMA : Australia
+NML : Japan
+```
+
 Test script by running
 
 `$ ./leaf-python-mqtt.py`
