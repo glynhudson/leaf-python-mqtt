@@ -75,8 +75,8 @@ def on_message(client, userdata, msg):
       logging.info('Update control command received: ' + control_message)
       if control_message == '1':
         get_leaf_update()
-        time.sleep(30)
-        get_leaf_status()
+        time.sleep(10)
+        mqtt_publish()
         
 client = mqtt.Client()
 # Callback when MQTT is connected
@@ -116,7 +116,7 @@ def climate_control(climate_control_instruction):
     logging.info(stop_cc_result)
 
   
-
+# Request update from car, use carefully: requires car GSM modem to powerup
 def get_leaf_update():
   logging.debug("login = %s , password = %s" % ( username , password)  )
   logging.info("Prepare Session get car update")
@@ -142,7 +142,7 @@ def get_leaf_update():
   
   leaf_info = l.get_latest_battery_status()
 
-  
+# Get last updated data from Nissan server
 def get_leaf_status():
   logging.debug("login = %s , password = %s" % ( username , password) )
   logging.info("Prepare Session")
@@ -180,6 +180,15 @@ def get_leaf_status():
   # logging.info("getting climate update")
   # climate = l.get_latest_hvac_status()
   # pprint.pprint(climate)
+  
+  mqtt_publish()
+  
+  logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+  logging.info("Schedule API update every " + GET_UPDATE_INTERVAL + "min")
+  
+
+def mqtt_publish():
+  logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
   logging.info("publishing to MQTT base status topic: " + mqtt_status_topic)
   client.publish(mqtt_status_topic + "/last_updated", leaf_info.answer["BatteryStatusRecords"]["NotificationDateAndTime"])
@@ -195,11 +204,9 @@ def get_leaf_status():
     client.publish(mqtt_status_topic + "/connected", "No")
   else:
     client.publish(mqtt_status_topic + "/connected", leaf_info.is_connected)
-  logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-  logging.info("Schedule API update every " + GET_UPDATE_INTERVAL + "min")
 
 
-
+#########################################################################################################################
 # Run on first time
 get_leaf_status()
 
