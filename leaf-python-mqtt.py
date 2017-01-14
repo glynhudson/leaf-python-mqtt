@@ -74,9 +74,9 @@ def on_message(client, userdata, msg):
     if control_subtopic == 'update':
       logging.info('Update control command received: ' + control_message)
       if control_message == '1':
-        get_leaf_update()
+        leaf_info = get_leaf_update()
         time.sleep(10)
-        mqtt_publish()
+        mqtt_publish(leaf_info)
         
 client = mqtt.Client()
 # Callback when MQTT is connected
@@ -141,6 +141,7 @@ def get_leaf_update():
     battery_status = l.get_status_from_update(result_key)
   
   leaf_info = l.get_latest_battery_status()
+  return (leaf_info)
 
 # Get last updated data from Nissan server
 def get_leaf_status():
@@ -181,13 +182,14 @@ def get_leaf_status():
   # climate = l.get_latest_hvac_status()
   # pprint.pprint(climate)
   
-  mqtt_publish()
+  mqtt_publish(leaf_info)
   
   logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
   logging.info("Schedule API update every " + GET_UPDATE_INTERVAL + "min")
+  return (leaf_info)
   
 
-def mqtt_publish():
+def mqtt_publish(leaf_info):
   logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
   logging.info("publishing to MQTT base status topic: " + mqtt_status_topic)
