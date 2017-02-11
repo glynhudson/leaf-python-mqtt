@@ -5,7 +5,7 @@ Frame label="Car"{
                 Text item=leaf_battery_percentage   icon="shield"
                 Text item=leaf_connected            icon="shield"
                 Text item=leaf_charging_status      icon="shield"
-                Switch item=leaf_heating  label="Climate Control"          mappings=[OFF="Off", ON="On"] icon="fire"
-                Switch item=leaf_update  label="Request Update"        mappings=[OFF="Off", ON="On"] icon="settings"
+                Switch item=leaf_heating  label="Climate Control"          mappings=[ON="Turn on"] icon="fire"
+                Switch item=leaf_update  label="Request Update"        mappings=[ON="Now"] icon="settings"
             }
 }
