@@ -6,5 +6,5 @@ String leaf_connected               "Connected? [%s]"  { mqtt="<[mosquitto:leaf/
 String leaf_charging_status         "Charging? [%s]"   { mqtt="<[mosquitto:leaf/status/charging_status:state:default]" }
 
 
-Switch leaf_update  "Get Car Update" {mqtt=">[mosquitto:leaf/control/update:command:ON:1],>[mosquitto:leaf/control/update:command:OFF:0]"}
-Switch leaf_heating "Heating"        {mqtt=">[mosquitto:leaf/control/climate:command:ON:1],>[mosquitto:leaf/control/climate:command:OFF:0]}"
+Switch leaf_update  "Get Car Update" {autoupdate="false",mqtt=">[mosquitto:leaf/control/update:command:ON:1]"}
+Switch leaf_heating "Heating"        {autoupdate="false",mqtt=">[mosquitto:leaf/control/climate:command:ON:1]}"
