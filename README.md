@@ -1,6 +1,6 @@
 # leaf-python-mqtt
 
-Hacked together script to extract data from Nissan Leaf API using [pycarwings2](https://github.com/cedric222/pycarwings2) and post to MQTT. Once data is in MQTT it can easily be used to inform home automation and smart charging applications. e.g OpenHAB, Home Assistant, OpenEVSE.
+Hacked together script to extract data from Nissan Leaf API using [pycarwings2](https://github.com/jdhorne/pycarwings2) and post to MQTT. Once data is in MQTT it can easily be used to inform home automation and smart charging applications. e.g OpenHAB, Home Assistant, OpenEVSE.
 
 Here is an example of displaying the MQTT data via openHAB Android app:
 
