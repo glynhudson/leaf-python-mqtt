@@ -49,7 +49,7 @@ Publishing `1` to the `climate` control sub-topic will turn on the cars climate 
 
 `pip install git+https://github.com/jdhorne/pycarwings2.git`
 
-See [pycarwings2 repo](https://github.com/cedric222/pycarwings2) for more info
+See [pycarwings2 repo](https://github.com/jdhorne/pycarwings2) for more info
 
 ### Install other python libs
 
