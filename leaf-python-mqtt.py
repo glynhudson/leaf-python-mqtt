@@ -160,34 +160,38 @@ def get_leaf_status():
   
   leaf_info = l.get_latest_battery_status()
   
-  logging.info("date %s" % leaf_info.answer["BatteryStatusRecords"]["OperationDateAndTime"])
-  logging.info("date %s" % leaf_info.answer["BatteryStatusRecords"]["NotificationDateAndTime"])
-  logging.info("battery_capacity2 %s" % leaf_info.answer["BatteryStatusRecords"]["BatteryStatus"]["BatteryCapacity"])
-  logging.info("battery_capacity %s" % leaf_info.battery_capacity)
-  logging.info("charging_status %s" % leaf_info.charging_status)
-  logging.info("battery_capacity %s" % leaf_info.battery_capacity)
-  logging.info("battery_remaining_amount %s" % leaf_info.battery_remaining_amount)
-  logging.info("charging_status %s" % leaf_info.charging_status)
-  logging.info("is_charging %s" % leaf_info.is_charging)
-  logging.info("is_quick_charging %s" % leaf_info.is_quick_charging)
-  logging.info("plugin_state %s" % leaf_info.plugin_state)
-  logging.info("is_connected %s" % leaf_info.is_connected)
-  logging.info("is_connected_to_quick_charger %s" % leaf_info.is_connected_to_quick_charger)
-  logging.info("time_to_full_trickle %s" % leaf_info.time_to_full_trickle)
-  logging.info("time_to_full_l2 %s" % leaf_info.time_to_full_l2)
-  logging.info("time_to_full_l2_6kw %s" % leaf_info.time_to_full_l2_6kw)
-  logging.info("leaf_info.battery_percent %s" % leaf_info.battery_percent)
-  
-  # logging.info("getting climate update")
-  # climate = l.get_latest_hvac_status()
-  # pprint.pprint(climate)
-  
-  mqtt_publish(leaf_info)
-  
-  logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-  logging.info("Schedule API update every " + GET_UPDATE_INTERVAL + "min")
-  return (leaf_info)
-  
+  if leaf_info:
+      logging.info("date %s" % leaf_info.answer["BatteryStatusRecords"]["OperationDateAndTime"])
+      logging.info("date %s" % leaf_info.answer["BatteryStatusRecords"]["NotificationDateAndTime"])
+      logging.info("battery_capacity2 %s" % leaf_info.answer["BatteryStatusRecords"]["BatteryStatus"]["BatteryCapacity"])
+      logging.info("battery_capacity %s" % leaf_info.battery_capacity)
+      logging.info("charging_status %s" % leaf_info.charging_status)
+      logging.info("battery_capacity %s" % leaf_info.battery_capacity)
+      logging.info("battery_remaining_amount %s" % leaf_info.battery_remaining_amount)
+      logging.info("charging_status %s" % leaf_info.charging_status)
+      logging.info("is_charging %s" % leaf_info.is_charging)
+      logging.info("is_quick_charging %s" % leaf_info.is_quick_charging)
+      logging.info("plugin_state %s" % leaf_info.plugin_state)
+      logging.info("is_connected %s" % leaf_info.is_connected)
+      logging.info("is_connected_to_quick_charger %s" % leaf_info.is_connected_to_quick_charger)
+      logging.info("time_to_full_trickle %s" % leaf_info.time_to_full_trickle)
+      logging.info("time_to_full_l2 %s" % leaf_info.time_to_full_l2)
+      logging.info("time_to_full_l2_6kw %s" % leaf_info.time_to_full_l2_6kw)
+      logging.info("leaf_info.battery_percent %s" % leaf_info.battery_percent)
+
+      # logging.info("getting climate update")
+      # climate = l.get_latest_hvac_status()
+      # pprint.pprint(climate)
+
+      mqtt_publish(leaf_info)
+
+      logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+      logging.info("Schedule API update every " + GET_UPDATE_INTERVAL + "min")
+      return (leaf_info)
+    else
+      logging.info("Did not get any response from the API")
+      return
+ 
 
 def mqtt_publish(leaf_info):
   logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -219,3 +223,4 @@ schedule.every(int(GET_UPDATE_INTERVAL)).minutes.do(get_leaf_status)
 while True:
     schedule.run_pending()
     time.sleep(1)
+
