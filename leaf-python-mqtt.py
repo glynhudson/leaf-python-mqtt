@@ -40,7 +40,7 @@ if os.path.exists(config_file_path):
 else:
   logging.error("ERROR: Config file not found " + config_file_path)
   quit()
-  
+
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -52,7 +52,7 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-  
+
     logging.info(msg.topic+" "+str(msg.payload))
 
     control_subtopic = msg.topic.rsplit('/',1)[1]
@@ -63,13 +63,13 @@ def on_message(client, userdata, msg):
     # If climate control messaage is received mqtt_control_topic/climate
     if control_subtopic == 'climate':
       logging.info('Climate control command received: ' + control_message)
-      
+
       if control_message == '1':
         climate_control(1)
 
       if control_message == '0':
         climate_control(0)
-        
+
     # If climate control messaage is received on mqtt_control_topic/update
     if control_subtopic == 'update':
       logging.info('Update control command received: ' + control_message)
@@ -77,7 +77,7 @@ def on_message(client, userdata, msg):
         leaf_info = get_leaf_update()
         time.sleep(10)
         mqtt_publish(leaf_info)
-        
+
 client = mqtt.Client()
 # Callback when MQTT is connected
 client.on_connect = on_connect
@@ -100,7 +100,7 @@ def climate_control(climate_control_instruction):
   logging.info("Login...")
   logging.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
   l = s.get_leaf()
-  
+
   if climate_control_instruction == 1:
     logging.info("Turning on climate control..wait 60s")
     result_key = l.start_climate_control()
@@ -115,7 +115,7 @@ def climate_control(climate_control_instruction):
     stop_cc_result = l.get_stop_climate_control_result(result_key)
     logging.info(stop_cc_result)
 
-  
+
 # Request update from car, use carefully: requires car GSM modem to powerup
 def get_leaf_update():
   logging.debug("login = %s , password = %s" % ( username , password)  )
@@ -134,12 +134,12 @@ def get_leaf_update():
     logging.error("ERROR: no responce from car update")
   time.sleep(30)
   battery_status = l.get_status_from_update(result_key)
-  
+
   while battery_status is None:
     logging.error("ERROR: no responce from car")
     time.sleep(10)
     battery_status = l.get_status_from_update(result_key)
-  
+
   leaf_info = l.get_latest_battery_status()
   return (leaf_info)
 
@@ -150,16 +150,16 @@ def get_leaf_status():
   s = pycarwings2.Session(username, password , nissan_region_code)
   logging.info("Login...")
   logging.info("Start update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-  
+
   try:
     l = s.get_leaf()
   except:
     logging.error("CarWings API error")
-  
+
   logging.info("get_latest_battery_status")
-  
+
   leaf_info = l.get_latest_battery_status()
-  
+
   if leaf_info:
       logging.info("date %s" % leaf_info.answer["BatteryStatusRecords"]["OperationDateAndTime"])
       logging.info("date %s" % leaf_info.answer["BatteryStatusRecords"]["NotificationDateAndTime"])
@@ -188,10 +188,10 @@ def get_leaf_status():
       logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
       logging.info("Schedule API update every " + GET_UPDATE_INTERVAL + "min")
       return (leaf_info)
-    else
+  else:
       logging.info("Did not get any response from the API")
       return
- 
+
 
 def mqtt_publish(leaf_info):
   logging.info("End update time: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -203,7 +203,7 @@ def mqtt_publish(leaf_info):
   time.sleep(1)
   client.publish(mqtt_status_topic + "/charging_status", leaf_info.charging_status)
   time.sleep(1)
-  
+
   if leaf_info.is_connected == True:
     client.publish(mqtt_status_topic + "/connected", "Yes")
   elif leaf_info.is_connected == False:
@@ -223,4 +223,3 @@ schedule.every(int(GET_UPDATE_INTERVAL)).minutes.do(get_leaf_status)
 while True:
     schedule.run_pending()
     time.sleep(1)
-
