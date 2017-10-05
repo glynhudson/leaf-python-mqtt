@@ -10,7 +10,7 @@ import paho.mqtt.client as mqtt
 import schedule
 from datetime import datetime
 import os
-
+import json
 
 config_file = 'config.ini'
 
@@ -203,6 +203,9 @@ def mqtt_publish(leaf_info):
   time.sleep(1)
   client.publish(mqtt_status_topic + "/charging_status", leaf_info.charging_status)
   time.sleep(1)
+  client.publish(mqtt_status_topic + "/raw", json.dumps(leaf_info.answer))
+  time.sleep(1)
+
 
   if leaf_info.is_connected == True:
     client.publish(mqtt_status_topic + "/connected", "Yes")
