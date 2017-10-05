@@ -17,8 +17,11 @@ leaf/status/last_updated
 leaf/status/battery_percent
 leaf/status/charging_status
 leaf/status/connected
-
 ```
+
+The raw json output from Nissan API request is posted to MQTT topic:
+
+`leaf/status/raw`
 
 These scheduled 'status' updates are polled from the Nissan API and not requested from the car. I.e. the last car status is returned. See the 'Control' section below for how to request an update from the car. Requesting the latest status from the API does not effect the car, eg. GSM telematics in the car are not activated.
 
