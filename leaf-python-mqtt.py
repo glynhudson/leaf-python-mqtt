@@ -96,7 +96,7 @@ client.loop_start()
 def climate_control(climate_control_instruction):
   logging.debug("login = %s , password = %s" % ( username , password)  )
   logging.info("Prepare Session climate control update")
-  s = pycarwings2.Session(username, password , "NE")
+  s = pycarwings2.Session(username, password , nissan_region_code)
   logging.info("Login...")
   logging.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
   l = s.get_leaf()
@@ -120,7 +120,7 @@ def climate_control(climate_control_instruction):
 def get_leaf_update():
   logging.debug("login = %s , password = %s" % ( username , password)  )
   logging.info("Prepare Session get car update")
-  s = pycarwings2.Session(username, password , "NE")
+  s = pycarwings2.Session(username, password , nissan_region_code)
   logging.info("Login...")
   logging.info(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
   try:
