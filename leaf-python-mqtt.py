@@ -155,6 +155,7 @@ def get_leaf_status():
     l = s.get_leaf()
   except:
     logging.error("CarWings API error")
+    return
 
   logging.info("get_latest_battery_status")
 
