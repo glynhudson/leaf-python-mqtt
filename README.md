@@ -54,6 +54,10 @@ Publishing `1` to the `climate` control sub-topic will turn on the cars climate 
 
 See [pycarwings2 repo](https://github.com/jdhorne/pycarwings2) for more info
 
+**Note:** as of May 18 the API URL changed for users in the UK [see discussion](https://github.com/jdhorne/pycarwings2/issues/35). UK users should use this version of pycarwings with the updated UK API URL: 
+
+`pip install git+https://github.com/gym22/pycarwings2.git`
+
 ### Install other python libs
 
 `pip install schedule datetime paho-mqtt time`
